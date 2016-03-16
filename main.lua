@@ -94,7 +94,9 @@ function love.keypressed(k)
 		local x, y = objects.ball.body: getLinearVelocity()
 		if x == 0 and y == 0 then
 			-- Apply a random impulse
-			objects.ball.body: applyLinearImpulse((0.5 - love.math.random()) * 500, (0.5 - love.math.random()) * 500)
+			local randomRotation = math.random() * 2 * math.pi
+			objects.ball.body: applyLinearImpulse(math.cos(randomRotation) * 500, math.sin(randomRotation) * 500)
+			--objects.ball.body: applyLinearImpulse((0.5 - love.math.random()) * 500, (0.5 - love.math.random()) * 500)
 		end
 	elseif k == "r" then
 		resetBall()
