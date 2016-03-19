@@ -2,6 +2,7 @@ Gamestate = require "hump.gamestate"
 
 local menu = {}
 local game = {}
+local endGame = {}
 
 
 ------------------------------------------------------------------------
@@ -13,7 +14,7 @@ function menu: enter()
 end
 
 function menu: draw()
-	love.graphics.print("Press Enter to continue", 170, 300)
+	love.graphics.printf("Press Enter to continue", 0, 300, 800, "center")
 end
 
 function menu: keyreleased(key, code)
@@ -22,6 +23,26 @@ function menu: keyreleased(key, code)
 	end
 end
 
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+function endGame: enter(previous, text)
+	love.graphics.setFont(love.graphics.newFont(40))
+
+	endGame.text = text
+end
+
+function endGame: draw()
+	love.graphics.printf(endGame.text, 0, 200, 800, "center")
+	love.graphics.printf("Press Enter to play again", 0, 300, 800, "center")
+end
+
+function endGame: keyreleased(key, code)
+	if key == "return" then
+		Gamestate.switch(game)
+	end
+end
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
@@ -132,6 +153,14 @@ function game: checkWorldBoundsCollision()
 	elseif ballX > love.graphics.getWidth() then
 		player.score = player.score + 1
 		game: resetBall()
+	end
+
+	if opponent.score == 1 then
+		Gamestate.switch(endGame, "You lose!")
+	end
+
+	if player.score == 1 then
+		Gamestate.switch(endGame, "You win!")
 	end
 end
 
